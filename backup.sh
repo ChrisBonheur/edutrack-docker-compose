@@ -30,8 +30,8 @@ if command -v aws &> /dev/null; then
     aws s3 cp $BACKUP_FILE $S3_BUCKET/
     echo "☁️ [$(date)] Sauvegarde envoyée sur AWS S3 ($S3_BUCKET)"
 else
-    echo "⚠️ [$(date)] AWS CLI non installé, upload ignoré."
+    echo "⚠️ [$(date)] AWS CLI non installé, mise à jour ignorée."
 fi
 
-echo "🚀 [$(date)] Processus de sauvegarde terminé."
+echo "🚀 [$(date)] Processus de sauvegarde terminé ."
 
