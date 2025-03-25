@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: c2513633c_bonheur
+      POSTGRES_PASSWORD: _^-xQX0]t9DQ
+      POSTGRES_DB: edutrack_template  # Base de données template
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./media:/app/media  
+      - ./init_user.sql:/docker-entrypoint-initdb.d/init_user.sql
+    ports:
+      - "5433:5432"
+    networks:
+      - edutrack_ecole_app-network
+
+  backend:
+    image: chrisbonheur/edutrack-backend:latest
+    container_name: fastapi_backend
+    environment:
+      - DB_HOST=db
+    volumes:
+      - ./media:/app/media  # Volume pour les médias
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - edutrack_ecole_app-network
+
+  frontend:
+    image: chrisbonheur/edutrack-frontend:latest
+    container_name: angular_frontend
+    ports:
+      - "4300:4300"
+    depends_on:
+      - backend
+    networks:
+      - edutrack_ecole_app-network
+
+volumes:
+  postgres_data:
+
+networks:
+  edutrack_ecole_app-network:
+    driver: bridge
+
