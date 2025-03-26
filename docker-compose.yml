@@ -8,12 +8,31 @@ services:
       POSTGRES_USER: c2513633c_bonheur
       POSTGRES_PASSWORD: _^-xQX0]t9DQ
       POSTGRES_DB: edutrack_template  # Base de données template
+      POSTGRES_REPLICATION_ROLE: primary
+      POSTGRES_REPLICATION_USER: replicator
+      POSTGRES_REPLICATION_PASSWORD: myreplicapassword
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./media:/app/media  
       - ./init_user.sql:/docker-entrypoint-initdb.d/init_user.sql
     ports:
       - "5433:5432"
+    networks:
+      - edutrack_ecole_app-network
+
+  db_replica:
+    image: postgres:13
+    container_name: postgres_replica
+    environment:
+      POSTGRES_USER: c2513633c_bonheur
+      POSTGRES_PASSWORD: _^-xQX0]t9DQ
+      POSTGRES_DB: edutrack_template
+      POSTGRES_REPLICATION_ROLE: standby
+      POSTGRES_PRIMARY_HOST: db
+      POSTGRES_REPLICATION_USER: replicator
+      POSTGRES_REPLICATION_PASSWORD: myreplicapassword
+    volumes:
+      - postgres_replica_data:/var/lib/postgresql/data
     networks:
       - edutrack_ecole_app-network
 
@@ -43,6 +62,7 @@ services:
 
 volumes:
   postgres_data:
+  postgres_replica_data:
 
 networks:
   edutrack_ecole_app-network:
