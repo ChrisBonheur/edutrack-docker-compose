@@ -24,6 +24,7 @@ services:
       - DB_HOST=db
     volumes:
       - ./media:/app/media  # Volume pour les médias
+      - ${PWD}:/app/docker-compose-dir  # Monter le dossier contenant docker-compose.yml
     ports:
       - "8000:8000"
     depends_on:
