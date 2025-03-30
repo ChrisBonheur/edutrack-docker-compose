@@ -9,5 +9,5 @@ fi
 echo "Lancement de l'application..."
 docker-compose down
 docker-compose pull
-docker-compose up --build -d
+docker-compose up --build #-d
 echo "L'application est ouverte dans votre navigateur!"
